@@ -1,0 +1,24 @@
+---
+
+vhost_dir: "/srv/http"
+
+# NOTE: Do not append a slash `/` to the proxy URL, otherwise Nginx won’t
+# canonise the parameters
+vhosts:
+  - domain: "matrix.{{ ansible_host }}"
+    template: reverse_proxy-matrix-synapse.j2
+    proxy_url: http://localhost:10100
+    ssl: true
+
+  - domain: "matrix-web.{{ ansible_host }}"
+    template: reverse_proxy-matrix-web.j2
+    proxy_url: http://localhost:10200
+    secure_headers: true
+    ssl: true
+
+  # NOTE: port 10300 for HTTP, port 10301 for SSH
+  - domain: "gitea.{{ ansible_host }}"
+    template: reverse_proxy.j2
+    proxy_url: http://localhost:10300
+    secure_headers: true
+    ssl: true

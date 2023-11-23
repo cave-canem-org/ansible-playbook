@@ -1,0 +1,15 @@
+---
+
+- name: generate a Diffie Helmann parameter for entropy
+  # https://docs.ansible.com/ansible/latest/collections/community/crypto/openssl_dhparam_module.html
+  openssl_dhparam:
+    path: /etc/ssl/dsa4096.pem
+    select_crypto_backend: openssl
+    size: 4096
+
+- name: deploy include file for SSL options
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+  copy:
+    src: files/nginx_ssl.conf
+    dest: /etc/ssl/nginx_ssl.conf
+    mode: 0644

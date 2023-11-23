@@ -1,0 +1,10 @@
+---
+
+- name: assign `docker` permissions to users
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+    state: present
+  loop: "{{ docker_operators }}"

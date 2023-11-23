@@ -1,0 +1,7 @@
+---
+
+- name: setup services that are accessible via browser
+  hosts: all
+  roles:
+    - certificates
+    - nginx

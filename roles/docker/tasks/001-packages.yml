@@ -1,0 +1,30 @@
+---
+
+- name: install Docker 3rd-party repository
+  block:
+    - name: install the Docker APT key
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_key_module.html
+      apt_key:
+        url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+        state: present
+
+    - name: install the Docker APT source
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_repository_module.html
+      apt_repository:
+        repo: >
+          deb [arch=amd64]
+          https://download.docker.com/linux/{{ ansible_distribution | lower }}
+          {{ ansible_distribution_release }} stable
+        filename: docker
+        state: present
+
+- name: install Docker packages
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    pkg:
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
+    state: present

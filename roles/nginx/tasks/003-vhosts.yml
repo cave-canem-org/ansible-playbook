@@ -1,0 +1,48 @@
+---
+
+- name: set up the vhost main directory
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+  file:
+    owner: www-data
+    path: "{{ vhost_dir }}/{{ item.domain }}"
+    state: directory
+    mode: 0755
+  loop: "{{ vhosts }}"
+
+- name: set up the vhost log directory
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+  file:
+    owner: www-data
+    path: "{{ vhost_dir }}/{{ item.domain }}/log"
+    state: directory
+    mode: 0750
+  loop: "{{ vhosts }}"
+
+- name: generate the web server configuration
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+  template:
+    owner: www-data
+    src: "templates/{{ item.template }}"
+    dest: "{{ vhost_dir }}/{{ item.domain }}/nginx.conf"
+  loop: "{{ vhosts }}"
+
+- name: enable the vhost on the web server
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+  file:
+    src: "{{ vhost_dir }}/{{ item.domain }}/nginx.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.domain }}.conf"
+    owner: www-data
+    group: www-data
+    state: link
+  loop: "{{ vhosts }}"
+
+- name: disable the default vhost on the web server
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+
+- name: validate the web server configuration
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+  command: nginx -t

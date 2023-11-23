@@ -1,0 +1,8 @@
+---
+
+- name: install the package dependencies for Transmission
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    state: present
+    pkg:
+      - transmission-daemon

@@ -1,0 +1,6 @@
+---
+
+# List of users that will have transparent access to Docker
+# i.e. added to the `docker` group
+docker_operators:
+  - ironzorg

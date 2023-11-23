@@ -1,0 +1,41 @@
+---
+
+- name: create user accounts
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  user:
+    name: "{{ item.key }}"
+    state: present
+  loop: "{{ users | dict2items }}"
+
+- name: install SSH public keys
+  # https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html
+  authorized_key:
+    user: "{{ item.key }}"
+    key: "{{ lookup('file', 'files/ssh-keys/' + item.key + '.pub') }}"
+    state: present
+  loop: "{{ users | dict2items }}"
+
+- name: create the `sudoer` user group
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/group_module.html
+  group:
+    name: sudoer
+    state: present
+
+- name: whitelist the `sudoer` group in `sudo`
+  # https://docs.ansible.com/ansible/latest/collections/community/general/sudoers_module.html
+  community.general.sudoers:
+    name: 10-sudoer
+    group: sudoer
+    commands: ALL
+    nopassword: false
+    state: present
+
+- name: assign `sudo` permissions to users
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  user:
+    name: "{{ item.key }}"
+    groups: sudoer
+    append: true
+    state: present
+  loop: "{{ users | dict2items }}"
+  when: item.value.sudoer | default(true) | bool

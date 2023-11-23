@@ -1,0 +1,25 @@
+---
+
+- name: install the package dependencies for Wireguard
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    state: present
+    pkg:
+      - wireguard
+      - wireguard-tools
+
+- name: enabling IPv4 forwarding
+  # https://docs.ansible.com/ansible/latest/collections/ansible/posix/sysctl_module.html
+  sysctl:
+    name: "net.ipv4.ip_forward"
+    value: 1
+    state: present
+    sysctl_set: true
+
+- name: enabling IPv6 forwarding
+  # https://docs.ansible.com/ansible/latest/collections/ansible/posix/sysctl_module.html
+  sysctl:
+    name: "net.ipv6.conf.all.forwarding"
+    value: 1
+    state: present
+    sysctl_set: true

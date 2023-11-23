@@ -1,0 +1,21 @@
+---
+
+- name: install base packages
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    state: present
+    pkg:
+      - fail2ban
+      - git-crypt
+      - htop
+      - jq
+      - kakoune
+      - kitty-terminfo
+      - mosh
+      - rsync
+      - silversearcher-ag
+      - sqlite3
+      - tig
+      - tmux
+      - weechat
+      - zsh

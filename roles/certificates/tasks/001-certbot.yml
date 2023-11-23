@@ -1,0 +1,26 @@
+---
+
+- name: install dependencies
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    state: present
+    pkg:
+      - certbot
+
+- name: setup certificates with certbot
+  block:
+    # NOTE: The service is restarted automatically by the `nginx` playbook
+    - name: stop Nginx
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_service_module.html
+      systemd:
+        name: nginx
+        state: stopped
+
+    - name: request or renew certificates
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+      command: >
+        certbot certonly --non-interactive --agree-tos
+        --standalone --keep-until-expiring
+        --email "{{ email_contact }}"
+        -d "{{ item.domain }}"
+      loop: "{{ vhosts }}"

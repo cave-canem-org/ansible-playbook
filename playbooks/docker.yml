@@ -1,0 +1,6 @@
+---
+
+- name: install and setup Docker
+  hosts: all
+  roles:
+    - docker

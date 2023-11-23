@@ -1,0 +1,6 @@
+---
+
+- name: bootstrap the server at UNIX-level
+  hosts: all
+  roles:
+    - base

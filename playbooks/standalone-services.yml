@@ -1,0 +1,6 @@
+---
+
+- name: setup services that are self-contained
+  hosts: all
+  roles:
+    - wireguard

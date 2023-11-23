@@ -1,0 +1,13 @@
+---
+
+- name: Run the `bootstrap` playbook
+  import_playbook: bootstrap.yml
+
+- name: Run the `docker` playbook
+  import_playbook: docker.yml
+
+- name: Run the `web-services` playbook
+  import_playbook: web-services.yml
+
+- name: Run the `standalone-services` playbook
+  import_playbook: standalone-services.yml

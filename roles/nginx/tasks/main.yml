@@ -1,0 +1,6 @@
+---
+
+- include_tasks: 001-packages.yml
+- include_tasks: 002-ssl.yml
+- include_tasks: 003-vhosts.yml
+- include_tasks: 004-systemd.yml
