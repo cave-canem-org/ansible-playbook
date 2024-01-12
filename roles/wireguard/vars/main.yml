@@ -1,4 +1,4 @@
 ---
 
 ewgq_bin_dir: "/opt/easy-wg-quick"
-ewgq_etc_dir: "/etc/easy-wg-quick"
+ewgq_etc_dir: "/etc/wireguard"

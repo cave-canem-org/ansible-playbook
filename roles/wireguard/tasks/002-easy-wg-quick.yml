@@ -25,7 +25,7 @@
     group: root
     path: "{{ ewgq_etc_dir }}"
     state: directory
-    mode: 0750
+    mode: 0700
 
 - name: set the default network range
   # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
@@ -34,17 +34,22 @@
     dest: "{{ ewgq_etc_dir }}/intnetmask.txt"
     mode: 0640
 
-- name: enable the default configuration
-  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
-  file:
-    state: link
-    force: true
-    src: "{{ ewgq_etc_dir }}/wghub.conf"
-    dest: "/etc/wireguard/wghub.conf"
-
 - name: install extra dependencies
   # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
   apt:
     state: present
     pkg:
       - qrencode
+
+- name: generate the easy-wg-quick configuration, unless present
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+  command:
+    chdir: "{{ ewgq_etc_dir }}"
+    cmd: "{{ ewgq_bin_dir }}/easy-wg-quick"
+    creates: "{{ ewgq_etc_dir }}/wghub.conf"
+
+- name: Enable the SystemD service for easy-wg-quick
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_service_module.html
+  systemd:
+    name: wg-quick@wghub
+    enabled: true
