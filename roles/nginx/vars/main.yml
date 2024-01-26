@@ -22,3 +22,9 @@ vhosts:
     proxy_url: http://localhost:10300
     secure_headers: true
     ssl: true
+
+  - domain: "bookmarks.{{ ansible_host }}"
+    template: reverse_proxy.j2
+    proxy_url: http://localhost:10400
+    secure_headers: true
+    ssl: true
