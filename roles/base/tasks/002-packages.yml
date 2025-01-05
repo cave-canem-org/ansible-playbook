@@ -12,6 +12,7 @@
       - kakoune
       - kitty-terminfo
       - mosh
+      - net-tools
       - rsync
       - silversearcher-ag
       - sqlite3
