@@ -36,12 +36,15 @@
     state: link
   loop: "{{ vhosts }}"
 
-- name: disable the default vhost on the web server
+- name: make the apex vhost the default on the web server
   # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
   file:
-    path: /etc/nginx/sites-enabled/default
-    state: absent
-
+    src: "{{ vhost_dir }}/{{ ansible_host }}/nginx.conf"
+    dest: /etc/nginx/sites-enabled/default
+    owner: www-data
+    group: www-data
+    state: link
+    force: true
 
 - name: validate the web server configuration
   # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html

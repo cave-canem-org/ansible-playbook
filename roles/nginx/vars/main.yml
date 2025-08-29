@@ -5,6 +5,11 @@ vhost_dir: "/srv/http"
 # NOTE: Do not append a slash `/` to the proxy URL, otherwise Nginx won’t
 # canonise the parameters
 vhosts:
+  - domain: "{{ ansible_host }}"
+    template: apex.j2
+    ssl: true
+    well_known: true
+
   - domain: "matrix.{{ ansible_host }}"
     template: reverse_proxy-matrix-synapse.j2
     proxy_url: http://localhost:10100
