@@ -1,0 +1,16 @@
+---
+
+- name: install the package dependencies to setup Deluge
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  apt:
+    state: present
+    pkg:
+      - apache2-utils
+
+- name: create the download directory
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+  file:
+    state: directory
+    path: /srv/torrent/downloads
+    owner: ironzorg
+    group: ironzorg

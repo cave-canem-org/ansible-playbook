@@ -33,3 +33,8 @@ vhosts:
     proxy_url: http://localhost:10400
     secure_headers: true
     ssl: true
+
+  - domain: "download.{{ ansible_host }}"
+    template: download.j2
+    proxy_url: http://localhost:10500
+    ssl: true
